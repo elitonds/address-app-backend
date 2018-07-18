@@ -1,16 +1,25 @@
 package address.service;
 
+import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 import address.dto.AddressDTO;
 import address.dto.MinMaxPopulationDTO;
 import address.dto.StateAndPopulationDTO;
 import address.model.AddressEntity;
 import address.repository.AddressRepository;
+import address.utils.AddressEnum;
 import address.utils.Utils;
 
 @Service
@@ -68,9 +77,29 @@ public class AddressService implements IAddressService {
 	@Override
 	public void deleteAdress(Long id) {
 		Optional<AddressEntity> entity = addressRepository.findById(id);
-		if(entity!=null && entity.get()!=null) {
+		if(entity!=null && !entity.equals(Optional.empty())) {
 			addressRepository.delete(entity.get());
 		}
+	}
+	
+	@Override
+	public Long countRegiters() {
+		return addressRepository.count();
+	}
+	
+	public List<LinkedHashMap<String, String>> getValuesCsvByColumn(AddressEnum column, String value){
+		try {
+	        CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+	        CsvMapper mapper = new CsvMapper();
+	        File file = new ClassPathResource("cidades.csv").getFile();
+			MappingIterator<LinkedHashMap<String, String>> readValues = mapper.reader(LinkedHashMap.class).with(bootstrapSchema).readValues(file);
+	        List<LinkedHashMap<String, String>> values = readValues.readAll();
+	        values = values.stream().filter(elements -> elements.get(column.getKey()).contains(value)).collect(Collectors.toList());
+	        return values;
+	    } catch (Exception e) {
+	    	
+	    }
+		return null;
 	}
 
 }

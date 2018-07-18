@@ -1,5 +1,6 @@
 package address.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import address.dto.AddressDTO;
+import address.dto.CsvRequestDTO;
 import address.dto.StateAndPopulationDTO;
 import address.model.AddressEntity;
 import address.service.IAddressService;
+import address.utils.AddressEnum;
 
 @RestController
 @RequestMapping("/api")
@@ -56,5 +59,15 @@ public class AddressController {
 	    @DeleteMapping("/delete/{id}")
 	    public void delete(@PathVariable("id") Long id) {
 	    	service.deleteAdress(id);
+	    }
+	    
+	    @GetMapping("/count")
+	    public Long countRegisters() {
+	    	return service.countRegiters();
+	    }
+	    
+	    @PostMapping("/find_in_csv")
+	    public List<LinkedHashMap<String, String>> getRegister(@RequestBody CsvRequestDTO request) {
+	    	return service.getValuesCsvByColumn(request.getColumn(), request.getValue());
 	    }
 }
