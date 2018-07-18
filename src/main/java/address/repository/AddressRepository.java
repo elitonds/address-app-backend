@@ -21,4 +21,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
 	
 	@Query("SELECT a FROM AddressEntity a WHERE a.ibgeId = :ibgeId")
     public AddressEntity findByIbgeId(@Param("ibgeId") Long ibgeId);
+	
+	@Query("SELECT a.name FROM AddressEntity a WHERE a.uf = :uf ORDER BY a.name")
+    public List<String> findCitiesByState(@Param("uf") String uf);
 }
