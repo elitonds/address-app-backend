@@ -11,4 +11,5 @@ public interface IAddressService {
 	public List<AddressEntity> findAllCapitals();
 	public List<MinMaxPopulationDTO> findMinMaxPopulationByState();
 	public List<StateAndPopulationDTO> findPopulationByState();
+	public AddressEntity findByIbgeId(Long ibgeId);
 }

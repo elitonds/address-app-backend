@@ -2,7 +2,12 @@ package address.dto;
 
 public class StateAndPopulationDTO {
 	private String name;
-	private Integer populationAmount;
+	private Long populationAmount;
+	
+	public StateAndPopulationDTO(String name, Long populationAmount) {
+		this.name = name;
+		this.populationAmount = populationAmount;
+	}
 
 	public String getName() {
 		return name;
@@ -12,11 +17,11 @@ public class StateAndPopulationDTO {
 		this.name = name;
 	}
 
-	public Integer getPopulationAmount() {
+	public Long getPopulationAmount() {
 		return populationAmount;
 	}
 
-	public void setPopulationAmount(Integer populationAmount) {
+	public void setPopulationAmount(Long populationAmount) {
 		this.populationAmount = populationAmount;
 	}
 }

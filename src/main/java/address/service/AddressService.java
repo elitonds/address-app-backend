@@ -34,5 +34,9 @@ public class AddressService implements IAddressService{
 	public List<StateAndPopulationDTO> findPopulationByState() {
 		return addressRepository.findPopulationByState();
 	}
+	
+	public AddressEntity findByIbgeId(Long ibgeId) {
+		return addressRepository.findByIbgeId(ibgeId);
+	}
 
 }
