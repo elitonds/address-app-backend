@@ -1,5 +1,9 @@
 package address.utils;
 
+import org.springframework.data.jpa.repository.Query;
+
+import address.model.AddressEntity;
+
 public enum AddressEnum {
 	IBGE_ID ("ibge_id"),
 	UF("uf"),
@@ -21,6 +25,4 @@ public enum AddressEnum {
 	public String getKey() {
 		return key;
 	}
-	
-	
 }

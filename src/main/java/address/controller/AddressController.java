@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import address.dto.AddressDTO;
 import address.dto.CsvRequestDTO;
+import address.dto.MinMaxPopulationDTO;
 import address.dto.StateAndPopulationDTO;
 import address.model.AddressEntity;
 import address.service.IAddressService;
@@ -34,6 +35,11 @@ public class AddressController {
 	    @GetMapping("/all_capitals")
 	    public List<AddressEntity> getAllCapitals() {
 	        return service.findAllCapitals();
+	    }
+	    
+	    @GetMapping("/min_max_population")
+	    public List<MinMaxPopulationDTO> getMinMaxPopulation() {
+	        return service.findMinMaxPopulationByState();
 	    }
 	    
 	    @GetMapping("/population_by_state")
@@ -69,5 +75,10 @@ public class AddressController {
 	    @PostMapping("/find_in_csv")
 	    public List<LinkedHashMap<String, String>> getRegister(@RequestBody CsvRequestDTO request) {
 	    	return service.getValuesCsvByColumn(request.getColumn(), request.getValue());
+	    }
+	    
+	    @GetMapping("/count_by_column/{column}")
+	    public Long countRegistersByColumn(@PathVariable("column") String column) {
+	    	return service.countRegitersByColumn(column);
 	    }
 }

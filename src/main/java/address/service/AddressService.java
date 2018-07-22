@@ -1,10 +1,16 @@
 package address.service;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -27,6 +33,9 @@ public class AddressService implements IAddressService {
 
 	@Autowired
 	AddressRepository addressRepository;
+	
+	@PersistenceContext
+	private EntityManager manager;
 
 	public List<AddressEntity> getAll() {
 		return addressRepository.findAll();
@@ -39,7 +48,23 @@ public class AddressService implements IAddressService {
 
 	@Override
 	public List<MinMaxPopulationDTO> findMinMaxPopulationByState() {
-		return null;
+		String sql = "select * from(" + 
+				"SELECT 'max' as type, uf as name,count(distinct(name)) as populationAmount " + 
+				"FROM address " + 
+				"group by uf  order by 3 desc limit 1) a " + 
+				"union " + 
+				"select * from( " + 
+				"SELECT 'min' as type, uf as name,count(distinct(name)) as populationAmount " + 
+				"FROM address " + 
+				"group by uf  order by 3 asc limit 1) a";
+		List<Object[]> result = manager.createNativeQuery(sql).getResultList();
+		List<MinMaxPopulationDTO> list = new ArrayList<MinMaxPopulationDTO>();
+		for(Object[] value : result) {
+			MinMaxPopulationDTO dto = new MinMaxPopulationDTO(
+					value[0].toString(), value[1].toString(), Long.valueOf(value[2].toString()));
+			list.add(dto);
+		}
+		return list;
 	}
 
 	@Override
@@ -100,6 +125,14 @@ public class AddressService implements IAddressService {
 	    	
 	    }
 		return null;
+	}
+
+	@Override
+	public Long countRegitersByColumn(String column) {
+		String sql = "SELECT COUNT(DISTINCT ("+column+")) FROM address";
+		Query query  = manager.createNativeQuery(sql);
+		Object result = query.getSingleResult();
+		return Long.valueOf(result.toString());
 	}
 
 }

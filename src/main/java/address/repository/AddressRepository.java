@@ -25,4 +25,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
 	@Query("SELECT a.name FROM AddressEntity a WHERE a.uf = :uf ORDER BY a.name")
     public List<String> findCitiesByState(@Param("uf") String uf);
 	
+//	@Query(value=":query", nativeQuery = true)
+//    public List<String> countRegistersByColumn(@Param("column")String query);
+	
 }
