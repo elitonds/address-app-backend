@@ -12,7 +12,7 @@ import address.utils.AddressEnum;
 public interface IAddressService {
 	public List<AddressEntity> getAll();
 	public List<AddressEntity> findAllCapitals();
-	public List findMinMaxPopulationByState();
+	public List<MinMaxPopulationDTO> findMinMaxPopulationByState();
 	public List<StateAndPopulationDTO> findPopulationByState();
 	public AddressEntity findByIbgeId(Long ibgeId);
 	public List<String> findCitiesByState(String uf);
@@ -21,4 +21,5 @@ public interface IAddressService {
 	public Long countRegiters();
 	public List<LinkedHashMap<String, String>> getValuesCsvByColumn(AddressEnum column, String value);
 	public Long countRegitersByColumn(String column);
+	public AddressEntity getFarthestCity(Long ibgeId);
 }

@@ -81,4 +81,9 @@ public class AddressController {
 	    public Long countRegistersByColumn(@PathVariable("column") String column) {
 	    	return service.countRegitersByColumn(column);
 	    }
+	    
+	    @GetMapping("/farthest_city/{ibge_id}")
+	    public AddressEntity getFarthestCity(@PathVariable("ibge_id") Long ibgeId) {
+	    	return service.getFarthestCity(ibgeId);
+	    }
 }
